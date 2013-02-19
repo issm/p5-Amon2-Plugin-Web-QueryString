@@ -66,6 +66,7 @@
 ^nytprof
 ^MYMETA\.
 
+^Amon2-Plugin-Web-QueryString-.*
 ^\.
 Readme.pod
 proverc
