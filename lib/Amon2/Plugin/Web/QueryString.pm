@@ -16,6 +16,7 @@ our $VERSION = '0.00_01';
     sub new {
         my ($class, $q) = @_;
         $q = "?$q" if $q !~ /^[?&]/;
+        $q =~ s/^[?&]$//;
         return bless \$q, $class;
     }
     sub strip {

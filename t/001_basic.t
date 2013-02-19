@@ -18,7 +18,6 @@ subtest 'new' => sub {
     subtest 'string' => sub {
         my $q = $c->query_string('');
         isa_ok $q, 'Amon2::Plugin::Web::QueryString::QueryString';
-        is "$q", '?';
 
         is $c->query_string('foo=1'), '?foo=1';
         is $c->query_string('?foo=1'), '?foo=1';
@@ -38,6 +37,12 @@ subtest 'new' => sub {
 
         ok $c->query_string('foobar') eq $c->query_string('foobar');
         ok $c->query_string('foobar') ne $c->query_string('barbaz');
+    };
+
+    subtest 'empty' => sub {
+        is $c->query_string(''), '';
+        is $c->query_string('?'), '';
+        is $c->query_string('&'), '';
     };
 };
 
