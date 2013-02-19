@@ -1,0 +1,8 @@
+#!perl
+# This file is managed by /Users/issm/perl5/perlbrew/perls/perl-5.12.4/bin/dim.
+{
+  dist => 'Amon2::Plugin::Web::QueryString',
+  distdir => 'Amon2-Plugin-Web-QueryString',
+  module => 'Amon2::Plugin::Web::QueryString',
+  template => 'DefaultMB'
+}
