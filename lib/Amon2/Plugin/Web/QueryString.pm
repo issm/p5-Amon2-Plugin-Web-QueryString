@@ -2,9 +2,74 @@ package Amon2::Plugin::Web::QueryString;
 use 5.008_001;
 use strict;
 use warnings;
-
+use Amon2::Util ();
 our $VERSION = '0.01';
 
+{
+    package Amon2::Plugin::Web::QueryString::QueryString;
+    use URI::Escape ();
+    use overload (
+        '""' => \&_str,
+        'eq' => sub { _str($_[0]) eq _str($_[1]) },
+        'ne' => sub { _str($_[0]) ne _str($_[1]) },
+    );
+    sub new {
+        my ($class, $q) = @_;
+        $q = "?$q" if $q !~ /^[?&]/;
+        return bless \$q, $class;
+    }
+    sub strip {
+        my $self = shift;
+        my $q = $$self;
+        my @keys = @_;
+        while ( my $k = shift @keys ) {
+            $q =~ s/&?${k}=[^&=]*//g;
+        }
+        $q =~ s/^[?&]+//;
+        return __PACKAGE__->new($q);
+    }
+    sub replace {
+        my ($self, %replace) = @_;
+        my $q = $$self;
+        for my $k ( keys %replace ) {
+            my $v = $replace{$k};
+            $q =~ s{(&?${k})=[^&=]*}{
+                "$1=@{[ URI::Escape::uri_escape($v) ]}";
+            }gex;
+        }
+        return __PACKAGE__->new($q);
+    }
+    sub starts {
+        my ($self, $c) = @_;
+        $c = '?' if ! defined $c;
+        ( my $q = $$self ) =~ s/^[?&]/$c/g;
+        return __PACKAGE__->new($q);
+    }
+    sub _str {
+        ref($_[0]) eq __PACKAGE__ ? ${$_[0]} : $_[0];
+    }
+}
+
+sub init {
+    my ($class, $c, $conf) = @_;
+    if ( ! $c->can('query_string') ) {
+        Amon2::Util::add_method($c, 'query_string', \&_query_string);
+    }
+}
+
+sub _query_string {
+    my ($c, $q) = @_;
+    if ( ! defined $q ) {
+        my @q = $c->req->query_parameters->flatten;
+        my @a;
+        while ( defined ( my $k = shift @q ) ){
+            my $v = shift @q;
+            push @a, "$k=$v";
+        }
+        $q = join '&', @a;
+    }
+    return Amon2::Plugin::Web::QueryString::QueryString->new($q);
+}
 
 1;
 __END__
@@ -19,7 +84,25 @@ This document describes Amon2::Plugin::Web::QueryString version 0.01.
 
 =head1 SYNOPSIS
 
-    use Amon2::Plugin::Web::QueryString;
+    ### in your app
+    use MyApp::Web;
+    use parent 'Amon2::Web';
+    __PACKAGE__->load_plugin('Web::QueryString');
+    1;
+
+    ### in controller
+    package MyApp::C::Root;
+
+    sub foo {
+        my $c = shift;
+        my $q = $c->query_string();
+        $c->render( 'foo.tx', { query => $q } );
+    }
+
+    ### in template
+    <a href="<: $query :>">foo</a>
+    <a href="?xxx=bar<: $query.starts('&') :>">bar</a>
+    <a href="<: $query.strip('foo') :>">baz</a>
 
 =head1 DESCRIPTION
 

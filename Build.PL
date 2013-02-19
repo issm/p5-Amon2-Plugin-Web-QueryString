@@ -15,7 +15,7 @@ my $build = Module::Build->new(
     configure_requires => { 'Module::Build' => '0.38' },
     requires           => {
         perl         => '5.008001',
-        # 'parent'     => 0,
+        'Amon2'      => '0',
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
