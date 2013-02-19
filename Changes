@@ -1,5 +1,4 @@
 Revision history for Perl extension Amon2::Plugin::Web::QueryString
 
-NEXT <<SET RELEASE DATE HERE>>
-    - original version; created by dim
-      at Tue Feb 19 10:18:38 2013.
+0.00_01 2013-02-19 15:32
+    - original version.
