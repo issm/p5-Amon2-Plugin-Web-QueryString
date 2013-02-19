@@ -1,5 +1,8 @@
 Revision history for Perl extension Amon2::Plugin::Web::QueryString
 
+0.00_03 2013-02-20 07:52
+    - Amon2::Plugin::Web::QueryString::QueryString: replace #stats with #with.
+
 0.00_02 2013-02-19 21:45
     - when query is "empty", '?' and '&' are not prepended.
 
