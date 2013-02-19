@@ -3,7 +3,7 @@ use 5.008_001;
 use strict;
 use warnings;
 use Amon2::Util ();
-our $VERSION = '0.00_01';
+our $VERSION = '0.00_02';
 
 {
     package Amon2::Plugin::Web::QueryString::QueryString;

@@ -1,4 +1,7 @@
 Revision history for Perl extension Amon2::Plugin::Web::QueryString
 
+0.00_02 2013-02-19 21:45
+    - when query is "empty", '?' and '&' are not prepended.
+
 0.00_01 2013-02-19 15:32
     - original version.
