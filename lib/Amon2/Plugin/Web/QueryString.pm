@@ -40,7 +40,7 @@ our $VERSION = '0.00_02';
         }
         return __PACKAGE__->new($q);
     }
-    sub starts {
+    sub with {
         my ($self, $c) = @_;
         $c = '?' if ! defined $c;
         ( my $q = $$self ) =~ s/^[?&]/$c/g;
@@ -102,7 +102,7 @@ This document describes Amon2::Plugin::Web::QueryString version 0.01.
 
     ### in template
     <a href="<: $query :>">foo</a>
-    <a href="?xxx=bar<: $query.starts('&') :>">bar</a>
+    <a href="?xxx=bar<: $query.with('&') :>">bar</a>
     <a href="<: $query.strip('foo') :>">baz</a>
 
 =head1 DESCRIPTION

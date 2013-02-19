@@ -78,22 +78,22 @@ subtest 'replace' => sub {
     };
 };
 
-subtest 'starts' => sub {
+subtest 'with' => sub {
     subtest 'basic' => sub {
         my $q = $c->query_string('foobar');
-        my $q1 = $q->starts();
+        my $q1 = $q->with();
         isa_ok $q1, 'Amon2::Plugin::Web::QueryString::QueryString';
         is $q1, '?foobar';
 
         $q = $c->query_string('barbaz');
-        $q1 = $q->starts('&');
+        $q1 = $q->with('&');
         is $q1, '&barbaz';
     };
 
     subtest 'check destruction' => sub {
         my $q = $c->query_string('foobar');
         is $q, '?foobar';
-        $q->starts('&');
+        $q->with('&');
         is $q, '?foobar';
     };
 };
